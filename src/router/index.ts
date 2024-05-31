@@ -1,5 +1,20 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
+import HomeView from '@/views/HomeView.vue'
+import { Auth } from '@/auth'
+
+function redirectIfGuest(){
+  const auth = new Auth()
+  if(!auth.isLoggedIn()){
+    return '/login'
+  }
+}
+
+function redirectIfAuthorized(){
+  const auth = new Auth()
+  if(auth.isLoggedIn()){
+    return '/'
+  }
+}
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -12,10 +27,20 @@ const router = createRouter({
     {
       path: '/about',
       name: 'about',
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
+      beforeEnter: redirectIfGuest,
       component: () => import('../views/AboutView.vue')
+    },
+    {
+      path: '/login',
+      name: 'login',
+      beforeEnter: redirectIfAuthorized,
+      component: () => import('@/components/LogIn.vue')
+    },
+    {
+      path: '/signup',
+      name: 'signup',
+      beforeEnter: redirectIfAuthorized,
+      component: () => import('@/components/SignUp.vue')
     }
   ]
 })
