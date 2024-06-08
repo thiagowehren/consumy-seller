@@ -48,6 +48,7 @@
         <p v-if="displayError">{{ errorMessage }}</p>
         <button type="submit">Log In</button>
       </form>
+        <RouterLink :to="{name: 'signup'}">Sign Up</RouterLink>
     </div>
   </main>
 </template>
