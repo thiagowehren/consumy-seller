@@ -104,7 +104,7 @@ class Auth {
         andThen()
     }
 
-    private getFallback(key: string) : string | null {
+    public getFallback(key: string) : string | null {
         let transient = createStorage(false)
         let persistent = createStorage(true)
 
