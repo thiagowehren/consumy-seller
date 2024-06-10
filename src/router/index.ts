@@ -45,4 +45,9 @@ const router = createRouter({
   ]
 })
 
+router.beforeEach((to, from) => {
+  const title = to.meta?.title ?? 'Delivery';
+  document.title = typeof title === 'string' ? title : 'Delivery';
+})
+
 export default router
