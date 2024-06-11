@@ -22,25 +22,59 @@ const router = createRouter({
     {
       path: '/',
       name: 'home',
-      component: HomeView
+      component: HomeView,
+      meta: { title: 'Delivery' }
     },
     {
       path: '/about',
       name: 'about',
       beforeEnter: redirectIfGuest,
-      component: () => import('../views/AboutView.vue')
+      component: () => import('../views/AboutView.vue'),
+      meta: { title: 'About - Delivery' }
     },
     {
       path: '/login',
       name: 'login',
       beforeEnter: redirectIfAuthorized,
-      component: () => import('@/components/LogIn.vue')
+      component: () => import('@/components/LogIn.vue'),
+      meta: { title: 'Login - Delivery' }
     },
     {
       path: '/signup',
       name: 'signup',
       beforeEnter: redirectIfAuthorized,
-      component: () => import('@/components/SignUp.vue')
+      component: () => import('@/components/SignUp.vue'),
+      meta: { title: 'Sign up - Delivery' }
+    },
+    {
+      path: '/stores',
+      name: 'stores',
+      beforeEnter: redirectIfGuest,
+      component: () => import('@/components/StoresList.vue'),
+      meta: { title: 'Stores - Delivery' }
+    },
+    {
+      path: '/stores/:storeId',
+      name: 'store-details',
+      beforeEnter: redirectIfGuest,
+      component: () => import('@/components/StoreDetails.vue'),
+      props: true,
+      meta: { title: 'Store - Delivery' }
+    },
+    {
+      path: '/stores/new',
+      name: 'store-new',
+      beforeEnter: redirectIfGuest,
+      component: () => import('@/components/StoresForm.vue'),
+      meta: { title: 'New Store - Delivery' }
+    },
+    {
+      path: '/stores/:storeId/edit',
+      name: 'store-edit',
+      beforeEnter: redirectIfGuest,
+      component: () => import('@/components/StoresForm.vue'),
+      props: true,
+      meta: { title: 'Edit Store - Delivery' }
     }
   ]
 })
