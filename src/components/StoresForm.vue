@@ -88,10 +88,10 @@ const onFileChange = (event: Event) => {
 <main>
   <div>
     <div v-if="isEditMode">
-      <LinkPathNav :route="`/stores/${storeId}/edit`" />
+      <LinkPathNav :route="`/stores/${storeId}/edit`" :clickableSegments="[0, 1, 2]"/>
       </div>
     <div v-else>
-      <LinkPathNav :route="`/stores/new`" />
+      <LinkPathNav :route="`/stores/new`" :clickableSegments="[0, 1]"/>
     </div>
 
     <h1>{{ isEditMode ? 'Edit Store' : 'New Store' }}</h1>

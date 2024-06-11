@@ -51,7 +51,7 @@ const fetchStores = async (newPage?: number) => {
   <main>
     <div><p v-if="alert">{{ alert }}</p></div>
     <div><p v-if="errorMessage">{{ errorMessage }}</p></div>
-    <div><LinkPathNav :route="`/stores`" /></div>
+    <div><LinkPathNav :route="`/stores`" :clickableSegments="[0]"/></div>
     <div>
       <h1>Stores</h1>
       <router-link to="/stores/new">Create a new store</router-link>
