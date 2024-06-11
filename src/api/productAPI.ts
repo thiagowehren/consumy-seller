@@ -23,26 +23,61 @@ export async function getStoreProduct(storeId: string, productId: string): Promi
 }
 
 export async function createStoreProduct(storeId: string, productData: CreateProduct): Promise<ProductResponse> {
+    const formData = new FormData();
+    Object.keys(productData.product).forEach(key => {
+        const value = productData.product[key as keyof typeof productData.product];
+        if (value !== undefined && value !== null) {
+            if (key === 'image') {
+                formData.append(key, (value as File));
+            } else {
+                formData.append(`product[${key}]`, value as string);
+            }
+        }
+    });
+
     const response = await request<ProductResponse>(`/stores/${storeId}/products`, {
         method: "POST",
-        body: { ...productData }
+        body: formData,
+        headers: {
+            'Accept': 'application/json'
+        }
     });
+
     if (!response) {
         throw new Error("Failed to create product.");
     }
+
     return response;
 }
 
 export async function updateStoreProduct(storeId: string, productId: string, productData: Partial<CreateProduct['product']>): Promise<ProductResponse> {
+    const formData = new FormData();
+    Object.keys(productData).forEach(key => {
+        const value = productData[key as keyof typeof productData];
+        if (value !== undefined && value !== null) {
+            if (key === 'image') {
+                formData.append(key, (value as File));
+            } else {
+                formData.append(`product[${key}]`, value as string);
+            }
+        }
+    });
+
     const response = await request<ProductResponse>(`/stores/${storeId}/products/${productId}`, {
         method: "PUT",
-        body: { ...productData }
+        body: formData,
+        headers: {
+            'Accept': 'application/json'
+        }
     });
+
     if (!response) {
         throw new Error("Failed to update product.");
     }
+
     return response;
 }
+
 
 export async function deleteStoreProduct(storeId: string, productId: string): Promise<void> {
     return request<void>(`/stores/${storeId}/products/${productId}`, {

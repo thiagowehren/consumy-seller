@@ -22,27 +22,51 @@ export async function getStore(id: string = "-1"): Promise<StoreResponse> {
     return response;
 }
 
-export async function createStore(storeData: CreateStore): Promise<StoreResponse> {
-    console.log(`no storeAPI.createStore tentando criar: ${storeData}`)
-    console.log(storeData)
+export async function createStore(storeData: Partial<CreateStore['store']>): Promise<StoreResponse> {
+    const formData = new FormData();
+    Object.keys(storeData).forEach(key => {
+        const value = storeData[key as keyof CreateStore['store']];
+        if (value !== undefined && value !== null) {
+            formData.append(`store[${key}]`, value as string | Blob);
+        }
+    });
+
     const response = await request<StoreResponse>('/stores', {
         method: "POST",
-        body: { ...storeData }
+        body: formData,
+        headers: {
+            'Accept': 'application/json'
+        }
     });
+
     if (!response) {
         throw new Error("Failed to create store.");
     }
+
     return response;
 }
 
 export async function updateStore(id: string, storeData: Partial<CreateStore['store']>): Promise<StoreResponse> {
+    const formData = new FormData();
+    Object.keys(storeData).forEach(key => {
+        const value = storeData[key as keyof CreateStore['store']];
+        if (value !== undefined && value !== null) {
+            formData.append(`store[${key}]`, value as string | Blob);
+        }
+    });
+
     const response = await request<StoreResponse>(`/stores/${id}`, {
         method: "PUT",
-        body: { ...storeData }
+        body: formData,
+        headers: {
+            'Accept': 'application/json'
+        }
     });
+
     if (!response) {
         throw new Error("Failed to update store.");
     }
+
     return response;
 }
 
