@@ -7,6 +7,7 @@ import Paginator from '@/components/PaginatorNav.vue';
 import defaultShopImage from '@/assets/shop-default-256.png';
 import { Pagination } from '@/dtos/paginationDTO';
 import { StoreResponse } from '@/dtos/storeDTO';
+import LinkPathNav from '@/components/LinkPathNav.vue';
 
 const route = useRoute();
 const router = useRouter();
@@ -50,6 +51,7 @@ const fetchStores = async (newPage?: number) => {
   <main>
     <div><p v-if="alert">{{ alert }}</p></div>
     <div><p v-if="errorMessage">{{ errorMessage }}</p></div>
+    <div><LinkPathNav :route="`/stores`" /></div>
     <div>
       <h1>Stores</h1>
       <router-link to="/stores/new">Create a new store</router-link>

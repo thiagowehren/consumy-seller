@@ -5,6 +5,7 @@ import { getStore } from '@/api/storeAPI';
 import { standardizeErrorMessage } from '@/helpers/standardizeErrorMessage';
 import defaultShopImage from '@/assets/shop-default-256.png';
 import { StoreResponse } from '@/dtos/storeDTO';
+import LinkPathNav from '@/components/LinkPathNav.vue';
 
 const route = useRoute();
 const router = useRouter();
@@ -35,6 +36,7 @@ const fetchStore = async () => {
       <h1>Store</h1>
 
       <div><p v-if="errorMessage">{{ errorMessage }}</p></div>
+      <div><LinkPathNav :route="`stores/${storeId}`" /></div>
       <div v-if="store">
           <img :src="store.image_url ? store.image_url : defaultShopImage" alt="Imagem da loja" style="width: 100px; height: 100px;">
           <p>{{ store.name }}</p>

@@ -10,6 +10,7 @@ import BaseTextInput from '@/components/BaseTextInput.vue'
 import BaseCheckboxInput from '@/components/BaseCheckboxInput.vue'
 import { storeFormErrorMessages } from '@/helpers/constants/storeFormErrorMessages'
 import defaultShopImage from '@/assets/shop-default-256.png';
+import LinkPathNav from '@/components/LinkPathNav.vue';
 
 const route = useRoute()
 const router = useRouter()
@@ -86,11 +87,16 @@ const onFileChange = (event: Event) => {
 <template>
 <main>
   <div>
-    <h1>{{ isEditMode ? 'Edit Store' : 'New Store' }}</h1>
-    
-    <div>
-      <p v-if="errors">{{ errorMessage }}</p>
+    <div v-if="isEditMode">
+      <LinkPathNav :route="`/stores/${storeId}/edit`" />
+      </div>
+    <div v-else>
+      <LinkPathNav :route="`/stores/new`" />
     </div>
+
+    <h1>{{ isEditMode ? 'Edit Store' : 'New Store' }}</h1>
+    <div><p v-if="errors">{{ errorMessage }}</p></div>
+
     <div>
       <div v-if="isEditMode && storeData">
         <img :src="storeData.image_url ? storeData.image_url : defaultShopImage" alt="Imagem da loja" style="width: 100px; height: 100px;">
