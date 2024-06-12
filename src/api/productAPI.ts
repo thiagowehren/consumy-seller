@@ -1,5 +1,6 @@
 import type { ProductResponse, ProductsResponse, CreateProduct } from "@/dtos/productDTO";
 import { request } from './HTTPClient';
+import { formatPrice } from "@/helpers/formatPrice"
 
 export async function getAllStoreProducts(storeId: string, page: number = 1): Promise<ProductsResponse> {
     const response = await request<ProductsResponse>(`/stores/${storeId}/products`, {
@@ -22,10 +23,15 @@ export async function getStoreProduct(storeId: string, productId: string): Promi
     return response;
 }
 
-export async function createStoreProduct(storeId: string, productData: CreateProduct): Promise<ProductResponse> {
+export async function createStoreProduct(storeId: string, productData: CreateProduct['product']): Promise<ProductResponse> {
+
+    if (productData.price) {
+        productData.price = formatPrice(productData.price);
+    }
+
     const formData = new FormData();
-    Object.keys(productData.product).forEach(key => {
-        const value = productData.product[key as keyof typeof productData.product];
+    Object.keys(productData).forEach(key => {
+        const value = productData[key as keyof typeof productData];
         if (value !== undefined && value !== null) {
             if (key === 'image') {
                 formData.append(key, (value as File));
@@ -51,6 +57,11 @@ export async function createStoreProduct(storeId: string, productData: CreatePro
 }
 
 export async function updateStoreProduct(storeId: string, productId: string, productData: Partial<CreateProduct['product']>): Promise<ProductResponse> {
+    
+    if (productData.price) {
+        productData.price = formatPrice(productData.price);
+    }
+
     const formData = new FormData();
     Object.keys(productData).forEach(key => {
         const value = productData[key as keyof typeof productData];
