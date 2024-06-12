@@ -64,12 +64,14 @@ const onSubmit = async () => {
 
           if (isEditMode.value && storeId) {
               await updateStore(storeId, storeData);
+              router.go(0);
           } else {
               await createStore(storeData);
+              router.push({ path: '/stores', query: { notice: "Loja criada com sucesso." } });
           }
-          router.push('/stores');
       } catch (error) {
           errorMessage.value = standardizeErrorMessage(error);
+          errors.value = true;
       }
   }
 }

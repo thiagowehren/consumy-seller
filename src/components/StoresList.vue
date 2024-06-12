@@ -13,6 +13,7 @@ const route = useRoute();
 const router = useRouter();
 
 const alert = route.query.alert as string | undefined;
+const notice = route.query.notice as string | undefined;
 const errorMessage = ref('');
 
 let page = 1;
@@ -49,10 +50,11 @@ const fetchStores = async (newPage?: number) => {
 
 <template>
   <main>
-    <div><p v-if="alert">{{ alert }}</p></div>
-    <div><p v-if="errorMessage">{{ errorMessage }}</p></div>
     <div><LinkPathNav :route="`/stores`" :clickableSegments="[0]"/></div>
     <div>
+      <div><p v-if="alert">{{ alert }}</p></div>
+      <div><p v-if="notice">{{ notice }}</p></div>
+      <div><p v-if="errorMessage">{{ errorMessage }}</p></div>
       <h1>Stores</h1>
       <router-link to="/stores/new">Create a new store</router-link>
       <p>(page: {{ page }})</p>
