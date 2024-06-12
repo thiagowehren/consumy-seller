@@ -5,7 +5,7 @@ import { getStore } from '@/api/storeAPI';
 import { getAllStoreProducts } from '@/api/productAPI';
 import { standardizeErrorMessage } from '@/helpers/standardizeErrorMessage';
 import defaultShopImage from '@/assets/shop-default-256.png';
-import { StoreResponse, ProductResponse } from '@/dtos/storeDTO';
+import { StoreResponse, ProductResponse, Pagination } from '@/dtos/storeDTO';
 import LinkPathNav from '@/components/LinkPathNav.vue';
 import ProductDetails from '@/components/ProductDetails.vue';
 
@@ -16,6 +16,7 @@ const errorMessage = ref('');
 const store = ref<StoreResponse | null>(null);
 const products = ref<ProductResponse[]>([]);
 const storeId = route.params.storeId as string;
+const pagination = ref<Pagination>({ current: 1, pages: 1 });
 
 const isStoreLoaded = ref(false);
 
@@ -43,6 +44,22 @@ const fetchProducts = async () => {
   try {
     const response = await getAllStoreProducts(storeId);
     products.value = response.products;
+    pagination.value = response.pagination;
+  } catch (error) {
+    errorMessage.value = standardizeErrorMessage(error);
+    console.log(errorMessage.value);
+  }
+};
+
+const fetchMoreProducts = async () => {
+  if (!isStoreLoaded.value || !pagination.value.next) {
+    return;
+  }
+
+  try {
+    const response = await getAllStoreProducts(storeId, pagination.value.next);
+    products.value = [...products.value, ...response.products];
+    pagination.value = response.pagination;
   } catch (error) {
     errorMessage.value = standardizeErrorMessage(error);
     console.log(errorMessage.value);
@@ -65,8 +82,10 @@ const fetchProducts = async () => {
       </div>
 
       <h2>Products</h2>
+      <router-link :to="`/stores/${storeId}/products/new`">Create a new product</router-link>
       <div v-if="products.length > 0">
         <ProductDetails v-for="product in products" :key="product.id" :product="product" :storeId="storeId" />
+        <button @click="fetchMoreProducts" v-if="pagination.next">Carregar Mais</button>
       </div>
       <div v-else>
         <p>No products available</p>

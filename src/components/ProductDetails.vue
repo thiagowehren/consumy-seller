@@ -17,7 +17,6 @@ watch(() => props.product, (newValue) => {
 
 <template>
   <div>
-    <h2>Product Details</h2>
     <div v-if="product">
       <img :src="product.image_url ? product.image_url : defaultProductImage" alt="Imagem do Produto" style="width: 100px; height: 100px;">
       <p>Title: {{ product.title }}</p>
