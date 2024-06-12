@@ -75,6 +75,22 @@ const router = createRouter({
       component: () => import('@/components/StoresForm.vue'),
       props: true,
       meta: { title: 'Edit Store - Delivery' }
+    },
+    {
+      path: '/stores/:storeId/products/:productId/edit',
+      name: 'product-edit',
+      beforeEnter: redirectIfGuest,
+      component: () => import('@/components/ProductsForm.vue'),
+      props: true,
+      meta: { title: 'Edit Product - Delivery' }
+    },
+    {
+      path: '/stores/:storeId/products/new',
+      name: 'product-new',
+      beforeEnter: redirectIfGuest,
+      component: () => import('@/components/ProductsForm.vue'),
+      props: true,
+      meta: { title: 'New Product - Delivery' }
     }
   ]
 })
