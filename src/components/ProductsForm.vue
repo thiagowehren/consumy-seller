@@ -5,13 +5,12 @@ import { useRouter, useRoute } from 'vue-router'
 import { getStoreProduct, createStoreProduct, updateStoreProduct } from '@/api/productAPI'
 import { standardizeErrorMessage } from '@/helpers/standardizeErrorMessage'
 import { ProductResponse, CreateProduct } from '@/dtos/productDTO'
+import { productFormErrorMessages } from '@/helpers/constants/productFormErrorMessages'
+import defaultProductImage from '@/assets/dish-default-256.png';
 
 import BaseTextInput from '@/components/BaseTextInput.vue'
 import BaseCheckboxInput from '@/components/BaseCheckboxInput.vue'
-import { productFormErrorMessages } from '@/helpers/constants/productFormErrorMessages'
-import { formatPrice } from '@/helpers/formatPrice'
-
-import defaultProductImage from '@/assets/dish-default-256.png';
+import BaseSelectInput from '@/components/BaseSelectInput.vue'
 import LinkPathNav from '@/components/LinkPathNav.vue';
 
 const route = useRoute()
@@ -29,6 +28,18 @@ const title = defineModel<string>('title')
 const price = defineModel<string>('price')
 const hidden = defineModel<boolean>('hidden', { default: false })
 const image = ref<File | null>(null);
+
+const expires_in = defineModel<number>('expires_in', {default: 0})
+const expiresInOptions = [
+  { label: 'Never', value: 0 },
+  { label: '5 seconds', value: 5 },
+  { label: '30 minutes', value: 1800 },
+  { label: '1 hour', value: 3600 },
+  { label: '4 hours', value: 14400 },
+  { label: '8 hours', value: 28800 },
+  { label: '16 hours', value: 57600 },
+  { label: '1 day', value: 86400 }
+];
 
 let product: ProductResponse | null = null;
 
@@ -65,7 +76,7 @@ const onSubmit = async () => {
         return;
     } else {
         try {
-          const productData: Partial<CreateProduct['product']> = { title: title.value, hidden: hidden.value, price: price.value };
+          const productData: Partial<CreateProduct['product']> = { title: title.value, hidden: hidden.value, price: price.value, expires_in: expires_in.value };
           if (image.value) {
               productData.image = image.value;
           }
@@ -121,6 +132,9 @@ const onFileChange = (event: Event) => {
         <BaseTextInput type="text" required v-model="title" label="Title" />
         <BaseTextInput type="text" required v-model="price" label="Price" />
         <BaseCheckboxInput type="checkbox" v-model="hidden" label="Hidden" v-bind:checked="hidden"/>
+        <BaseSelectInput v-model="expires_in" id="expires_in" label="Expiration" :options="exp">
+          <option v-for="option in expiresInOptions" :key="option.value" :value="option.value">{{ option.label }}</option>
+        </BaseSelectInput>
         <input type="file" @change="onFileChange" accept="image/*" />
         <button type="submit">{{ isEditMode ? 'Update' : 'Create' }}</button> 
       </form>
