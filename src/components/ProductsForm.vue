@@ -19,6 +19,7 @@ const router = useRouter()
 
 const errorMessage = ref('')
 const errors = defineModel<boolean>('errors', {default: false})
+const isLoading = ref(false);
 
 const storeId = route.params.storeId as string | undefined
 const productId = route.params.productId as string | undefined
@@ -51,17 +52,18 @@ onMounted(() => {
 })
 
 const onSubmit = async () => {
+    if (isLoading.value) {
+        return;
+    }
+
+    isLoading.value = true;
     errors.value = false;
 
-  if (!title.value) {
-        errorMessage.value = productFormErrorMessages.title.required;
+    if (!title.value || title.value.length < 1) {
+        errorMessage.value = title.value ? productFormErrorMessages.title.invalid : productFormErrorMessages.title.required;
         errors.value = true;
         return;
-  } else if (title.value.length < 3) {
-        errorMessage.value = productFormErrorMessages.title.invalid;
-        errors.value = true;
-        return;
-  } else {
+    } else {
         try {
           const productData: Partial<CreateProduct['product']> = { title: title.value, hidden: hidden.value, price: price.value };
           if (image.value) {
@@ -78,6 +80,8 @@ const onSubmit = async () => {
       } catch (error) {
           errorMessage.value = standardizeErrorMessage(error);
           errors.value = true;
+      } finally {
+          isLoading.value = false;
       }
   }
 }

@@ -17,6 +17,7 @@ const router = useRouter()
 
 const errorMessage = ref('')
 const errors = defineModel<boolean>('errors', {default: false})
+const isLoading = ref(false);
 
 const storeId = route.params.storeId as string | undefined
 const isEditMode = ref(!!storeId)
@@ -46,15 +47,16 @@ onMounted(() => {
 })
 
 const onSubmit = async () => {
+  if (isLoading.value) {
+    return;
+  }
+
+  isLoading.value = true;
   errors.value = false;
-  if (!name.value) {
-      errorMessage.value = storeFormErrorMessages.name.required;
-      errors.value = true;
-      return;
-  } else if (name.value.length < 3) {
-      errorMessage.value = storeFormErrorMessages.name.invalid;
-      errors.value = true;
-      return;
+  if (!name.value || name.value.length < 3) {
+    errorMessage.value = name.value ? storeFormErrorMessages.name.invalid : storeFormErrorMessages.name.required;
+    errors.value = true;
+    return;
   } else {
       try {
           const storeData: Partial<CreateStore['store']> = { name: name.value, hidden: hidden.value };
@@ -72,6 +74,8 @@ const onSubmit = async () => {
       } catch (error) {
           errorMessage.value = standardizeErrorMessage(error);
           errors.value = true;
+      }  finally {
+          isLoading.value = false;
       }
   }
 }
