@@ -4,7 +4,9 @@ import UserProfile from '@/components/UserProfile.vue'
 </script>
 
 <template>
-  <main>
-    <UserProfile />
-  </main>
+  <v-app>
+    <v-main>
+      <UserProfile />
+    </v-main>
+  </v-app>
 </template>
