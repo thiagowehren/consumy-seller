@@ -91,7 +91,22 @@ const router = createRouter({
       component: () => import('@/components/ProductsForm.vue'),
       props: true,
       meta: { title: 'New Product - Delivery' }
-    }
+    },
+    {
+      path: '/orders',
+      name: 'orders',
+      beforeEnter: redirectIfGuest,
+      component: () => import('@/components/OrdersPage.vue'),
+      meta: { title: 'Orders - Delivery' }
+    },
+    {
+      path: '/orders/:orderId',
+      name: 'order-details',
+      beforeEnter: redirectIfGuest,
+      component: () => import('@/components/OrderDetails.vue'),
+      props: true,
+      meta: { title: 'Order - Delivery' }
+    },
   ]
 })
 
