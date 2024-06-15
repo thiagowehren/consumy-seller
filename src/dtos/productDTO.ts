@@ -7,6 +7,7 @@ export interface ProductResponse {
     image_url: string | null;
     hidden?: boolean;               // when seller 
 	store_url?: string;             // from: GET stores/:id/products/:id
+    expires_at?: string | null;
 }
 
 export interface ProductsResponse {
