@@ -6,6 +6,6 @@
   @import 'tailwindcss/typography/base';
   @import 'tailwindcss/typography/components';
   body {
-      @apply prose;
+      /* @apply prose; */
   }
 }
