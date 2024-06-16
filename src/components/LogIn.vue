@@ -5,6 +5,7 @@
   import { validateInputs } from '@/helpers/loginFormValidationErrors.ts';
   import BaseTextInput from '@/components/BaseTextInput.vue'
   import BaseCheckboxInput from '@/components/BaseCheckboxInput.vue'
+  import UserNavigation from '@/components/UserNavigation.vue';
 
   const router = useRouter()
   const email = defineModel<string>('email')
