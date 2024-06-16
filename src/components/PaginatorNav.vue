@@ -1,30 +1,23 @@
 <template>
-  <div class="paginator">
-    <button @click="goToPage(1)" :disabled="pagination.current === 1">
-      First
-    </button>
-    <button @click="goToPage(pagination.previous)" :disabled="!pagination.previous">
-      Previous
-    </button>
-    <span v-for="num in pageNumbers" :key="num">
-      <button @click="goToPage(num)">{{ num }}</button>
-    </span>
-    <button @click="goToPage(pagination.next)" :disabled="!pagination.next">
-      Next
-    </button>
-    <button @click="goToPage(pagination.pages)" :disabled="pagination.current === pagination.pages">
-      Last
-    </button>
+  <div class="text-center">
+    <v-pagination
+      v-model="currentPage"
+      :length="pagination.pages"
+      :total-visible="7"
+      :prev-text="'Previous'"
+      :next-text="'Next'"
+      :first-text="'First'"
+      :last-text="'Last'"
+      :show-prev-next="true"
+      :show-first-last="true"
+    ></v-pagination>
   </div>
 </template>
 
 <script setup lang="ts">
-import { defineProps, defineEmits, computed } from 'vue';
+import { ref, watch, defineEmits, computed } from 'vue';
 import { Pagination } from '../dtos/paginationDTO';
-import { useRouter, useRoute } from 'vue-router';
-
-const route = useRoute();
-const router = useRouter();
+import { useRouter } from 'vue-router';
 
 const props = defineProps<{
   pagination: Pagination;
@@ -32,42 +25,21 @@ const props = defineProps<{
 }>();
 
 const emit = defineEmits(['page-change']);
+const router = useRouter();
 
-const goToPage = (page: number | null) => {
-  if (page !== null) {
-    const url = new URL(props.path, import.meta.env.VITE_DELIVERY_API_URL);
-    url.searchParams.set('page', page.toString());
-    router.push(url.pathname + url.search);
-    emit('page-change', page);
-  }
-};
+// Definindo currentPage como um ref e inicializando com base nos parâmetros da URL
+const currentPage = ref(getPageFromURL());
 
-const pageNumbers = computed(() => {
-  const pages = [];
-  const currentPage = props.pagination.current;
-  const totalPages = props.pagination.pages;
+function getPageFromURL(): number {
+  const searchParams = new URLSearchParams(router.currentRoute.value.query);
+  const page = parseInt(searchParams.get('page') || '1', 10);
+  return isNaN(page) ? 1 : page;
+}
 
-  const startPage = Math.max(1, currentPage - 2);
-  const endPage = Math.min(totalPages, currentPage + 2);
-
-  for (let i = startPage; i <= endPage; i++) {
-    pages.push(i);
-  }
-
-  return pages;
+watch(currentPage, (newPage) => {
+  const url = new URL(props.path, import.meta.env.VITE_DELIVERY_API_URL);
+  url.searchParams.set('page', newPage.toString());
+  router.push(url.pathname + url.search);
+  emit('page-change', newPage);
 });
 </script>
-
-<style scoped>
-.paginator {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 1rem;
-}
-
-button:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-</style>
