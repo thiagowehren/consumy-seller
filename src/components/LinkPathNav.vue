@@ -1,9 +1,9 @@
 <template>
-  <nav>
+  <nav class="my-4 mx-4">
     <span v-for="(segment, index) in segments" :key="index">
-      <span v-if="index !== 0"> > </span>
+      <span v-if="index !== 0" class="mx-1"> > </span>
       <template v-if="segment.clickable">
-        <router-link :to="segment.path">{{ segment.label }}</router-link>
+        <router-link :to="segment.path" class="text-red">{{ segment.label }}</router-link>
       </template>
       <template v-else>
         <span>{{ segment.label }}</span>
