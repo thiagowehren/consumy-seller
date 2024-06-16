@@ -11,6 +11,7 @@ import BaseCheckboxInput from '@/components/BaseCheckboxInput.vue'
 import { storeFormErrorMessages } from '@/helpers/constants/storeFormErrorMessages'
 import defaultShopImage from '@/assets/shop-default-256.png';
 import LinkPathNav from '@/components/LinkPathNav.vue';
+import UserNavigation from '@/components/UserNavigation.vue';
 
 const route = useRoute()
 const router = useRouter()
@@ -91,33 +92,34 @@ const onFileChange = (event: Event) => {
 </script>
 
 <template>
-<main>
-  <div>
-    <div v-if="isEditMode">
-      <LinkPathNav :route="`/stores/${storeId}/edit`" :clickableSegments="[0, 1, 2]"/>
-      </div>
-    <div v-else>
-      <LinkPathNav :route="`/stores/new`" :clickableSegments="[0, 1]"/>
-    </div>
+  <v-app>
+    <v-main>
+      <UserNavigation />
 
-    <h1>{{ isEditMode ? 'Edit Store' : 'New Store' }}</h1>
-    <div><p v-if="errors">{{ errorMessage }}</p></div>
-
-    <div>
-      <div v-if="isEditMode && storeData">
-        <img :src="storeData.image_url ? storeData.image_url : defaultShopImage" alt="Imagem da loja" style="width: 100px; height: 100px;">
+      <div>
+        <div v-if="isEditMode">
+          <LinkPathNav :route="`/stores/${storeId}/edit`" :clickableSegments="[0, 1, 2]"/>
+          </div>
+        <div v-else>
+          <LinkPathNav :route="`/stores/new`" :clickableSegments="[0, 1]"/>
+        </div>
+        <h1>{{ isEditMode ? 'Edit Store' : 'New Store' }}</h1>
+        <div><p v-if="errors">{{ errorMessage }}</p></div>
+        <div>
+          <div v-if="isEditMode && storeData">
+            <img :src="storeData.image_url ? storeData.image_url : defaultShopImage" alt="Imagem da loja" style="width: 100px; height: 100px;">
+          </div>
+          <div v-else>
+            <img :src="defaultShopImage" alt="Imagem da loja" style="width: 100px; height: 100px;">
+          </div>
+          <form novalidate @submit.prevent="onSubmit">
+            <BaseTextInput type="text" required v-model="name" label="Name" />
+            <BaseCheckboxInput type="checkbox" v-model="hidden" label="Hidden" v-bind:checked="hidden"/>
+            <input type="file" @change="onFileChange" accept="image/*" />
+            <button type="submit">{{ isEditMode ? 'Update' : 'Create' }}</button>
+          </form>
+        </div>
       </div>
-      <div v-else>
-        <img :src="defaultShopImage" alt="Imagem da loja" style="width: 100px; height: 100px;">
-      </div>
-
-      <form novalidate @submit.prevent="onSubmit">
-        <BaseTextInput type="text" required v-model="name" label="Name" />
-        <BaseCheckboxInput type="checkbox" v-model="hidden" label="Hidden" v-bind:checked="hidden"/>
-        <input type="file" @change="onFileChange" accept="image/*" />
-        <button type="submit">{{ isEditMode ? 'Update' : 'Create' }}</button> 
-      </form>
-    </div>
-  </div>
-</main>
+    </v-main>
+  </v-app>
 </template>

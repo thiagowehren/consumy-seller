@@ -104,7 +104,6 @@ const router = createRouter({
       name: 'order-details',
       beforeEnter: redirectIfGuest,
       component: () => import('@/components/OrderDetails.vue'),
-      props: true,
       meta: { title: 'Order - Delivery' }
     },
   ]

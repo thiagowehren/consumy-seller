@@ -8,6 +8,7 @@ import { Pagination } from '@/dtos/paginationDTO';
 import StoreCarousel from '@/components/StoreCarousel.vue';
 import OrdersList from '@/components/OrdersList.vue';
 import LinkPathNav from '@/components/LinkPathNav.vue';
+import UserNavigation from '@/components/UserNavigation.vue';
 
 const stores = ref<StoreResponse[]>([]);
 const orders = ref<OrderResponse[]>([]);
@@ -63,33 +64,36 @@ const handleStoreSelected = (storeId) => {
 
 
 <template>
-  <main>
-    <div><LinkPathNav :route="`/orders`" :clickableSegments="[0]"/></div>
-
-    <section>
-      <h1>Orders</h1>
-      <p v-if="stores.length === 0">Aviso: Não há lojas para serem selecionadas.</p>
-      <StoreCarousel 
-        :stores="stores" 
-        :storePagination="storePagination"
-        @store-selected="handleStoreSelected" 
-        @load-more="fetchMoreStores" 
-      />
-    </section>
+  <v-app>
+    <v-main>
+      <UserNavigation />
+      
+      <div><LinkPathNav :route="`/orders`" :clickableSegments="[0]"/></div>
+      <section>
+        <h1>Orders</h1>
+        <p v-if="stores.length === 0">Aviso: Não há lojas para serem selecionadas.</p>
+        <StoreCarousel
+          :stores="stores"
+          :storePagination="storePagination"
+          @store-selected="handleStoreSelected"
+          @load-more="fetchMoreStores"
+        />
+      </section>
     
     
-    <section>
-      <h2 >Pedidos da Loja Selecionada</h2>
-      <div v-if="!currentStoreId">
-        <p>Selecione uma loja antes de visualizar os produtos.</p>
-      </div>
-      <div v-else-if="orders.length === 0">
-        <p>Não há pedidos disponíveis para esta loja.</p>
-      </div>
-      <div v-else>
-        <OrdersList :orders="orders" />
-        <button @click="fetchMoreOrders" v-if="orderPagination.next">Carregar Mais Pedidos</button>
-      </div>
-    </section>
-  </main>
+      <section>
+        <h2 >Pedidos da Loja Selecionada</h2>
+        <div v-if="!currentStoreId">
+          <p>Selecione uma loja antes de visualizar os produtos.</p>
+        </div>
+        <div v-else-if="orders.length === 0">
+          <p>Não há pedidos disponíveis para esta loja.</p>
+        </div>
+        <div v-else>
+          <OrdersList :orders="orders" />
+          <button @click="fetchMoreOrders" v-if="orderPagination.next">Carregar Mais Pedidos</button>
+        </div>
+      </section>
+    </v-main>
+  </v-app>
 </template>

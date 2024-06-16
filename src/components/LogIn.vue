@@ -39,16 +39,19 @@
 </script>
 
 <template>
-  <main>
-    <div>
-      <form  novalidate @submit.prevent = "onSubmit()">
-        <BaseTextInput type="email" required v-model="email" label="Email" />
-        <BaseTextInput type="password" required v-model="password" label="Password" />
-        <BaseCheckboxInput type="checkbox" v-model="remember" label="Remember-me" />
-        <p v-if="displayError">{{ errorMessage }}</p>
-        <button type="submit">Log In</button>
-      </form>
-        <RouterLink :to="{name: 'signup'}">Sign Up</RouterLink>
-    </div>
-  </main>
+  <v-app>
+    <v-main>
+      <UserNavigation />
+      <div>
+        <form  novalidate @submit.prevent = "onSubmit()">
+          <BaseTextInput type="email" required v-model="email" label="Email" />
+          <BaseTextInput type="password" required v-model="password" label="Password" />
+          <BaseCheckboxInput type="checkbox" v-model="remember" label="Remember-me" />
+          <p v-if="displayError">{{ errorMessage }}</p>
+          <button type="submit">Log In</button>
+        </form>
+          <RouterLink :to="{name: 'signup'}">Sign Up</RouterLink>
+      </div>
+    </v-main>
+  </v-app>
 </template>

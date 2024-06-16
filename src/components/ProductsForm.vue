@@ -12,6 +12,7 @@ import BaseTextInput from '@/components/BaseTextInput.vue'
 import BaseCheckboxInput from '@/components/BaseCheckboxInput.vue'
 import BaseSelectInput from '@/components/BaseSelectInput.vue'
 import LinkPathNav from '@/components/LinkPathNav.vue';
+import UserNavigation from '@/components/UserNavigation.vue';
 
 const route = useRoute()
 const router = useRouter()
@@ -108,38 +109,39 @@ const onFileChange = (event: Event) => {
 </script>
 
 <template>
-<main>
-  <div>
-    <div v-if="isEditMode">
-      <LinkPathNav :route="`/stores/${storeId}/products/${productId}/edit`"  :clickableSegments="[0, 1, 4]" />
-    </div>
-    <div v-else>
-      <LinkPathNav :route="`/stores/${storeId}/products/new`" :clickableSegments="[0, 1, 3]"/>
-    </div>
+  <v-app>
+    <v-main>
+      <UserNavigation />
 
-    <h1>{{ isEditMode ? 'Edit Product' : 'New Product' }}</h1>
-    <div><p v-if="errors">{{ errorMessage }}</p></div>
-
-    <div>
-      <div v-if="isEditMode && product">
-        <img :src="product.image_url ? product.image_url : defaultProductImage" alt="Product Image" style="width: 100px; height: 100px;">
+      <div>
+        <div v-if="isEditMode">
+          <LinkPathNav :route="`/stores/${storeId}/products/${productId}/edit`"  :clickableSegments="[0, 1, 4]" />
+        </div>
+        <div v-else>
+          <LinkPathNav :route="`/stores/${storeId}/products/new`" :clickableSegments="[0, 1, 3]"/>
+        </div>
+        <h1>{{ isEditMode ? 'Edit Product' : 'New Product' }}</h1>
+        <div><p v-if="errors">{{ errorMessage }}</p></div>
+        <div>
+          <div v-if="isEditMode && product">
+            <img :src="product.image_url ? product.image_url : defaultProductImage" alt="Product Image" style="width: 100px; height: 100px;">
+          </div>
+          <div v-else>
+            <img :src="defaultProductImage" alt="Default Product Image" style="width: 100px; height: 100px;">
+          </div>
+          <form novalidate @submit.prevent="onSubmit">
+            <BaseTextInput type="text" required v-model="title" label="Title" />
+            <BaseTextInput type="text" required v-model="price" label="Price" />
+            <BaseCheckboxInput type="checkbox" v-model="hidden" label="Hidden" v-bind:checked="hidden"/>
+            <BaseSelectInput v-model="expires_in" id="expires_in" label="Expiration" :options="exp">
+              <option v-for="option in expiresInOptions" :key="option.value" :value="option.value">{{ option.label }}</option>
+            </BaseSelectInput>
+            <input type="file" @change="onFileChange" accept="image/*" />
+            <button type="submit">{{ isEditMode ? 'Update' : 'Create' }}</button>
+          </form>
+        </div>
       </div>
-      <div v-else>
-        <img :src="defaultProductImage" alt="Default Product Image" style="width: 100px; height: 100px;">
-      </div>
-
-      <form novalidate @submit.prevent="onSubmit">
-        <BaseTextInput type="text" required v-model="title" label="Title" />
-        <BaseTextInput type="text" required v-model="price" label="Price" />
-        <BaseCheckboxInput type="checkbox" v-model="hidden" label="Hidden" v-bind:checked="hidden"/>
-        <BaseSelectInput v-model="expires_in" id="expires_in" label="Expiration" :options="exp">
-          <option v-for="option in expiresInOptions" :key="option.value" :value="option.value">{{ option.label }}</option>
-        </BaseSelectInput>
-        <input type="file" @change="onFileChange" accept="image/*" />
-        <button type="submit">{{ isEditMode ? 'Update' : 'Create' }}</button> 
-      </form>
-    </div>
-  </div>
-</main>
+    </v-main>
+  </v-app>
 </template>
 

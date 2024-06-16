@@ -4,6 +4,7 @@
   import { Auth } from '@/auth'
   import { validateInputs } from '@/helpers/signupFormValidationErrors.ts';
   import BaseTextInput from '@/components/BaseTextInput.vue'
+  import UserNavigation from '@/components/UserNavigation.vue';
 
   const router = useRouter()
   const email = defineModel<string>('email')
@@ -39,20 +40,21 @@
 </script>
 
 <template>
-  <main>
-    <div>
-      {{email}}
-      {{password}}
-      {{passwordConfirm}}
-      <form novalidate @submit.prevent = "onSubmit()">
-        {{handleInputValidation}}
-        <BaseTextInput type="email" required v-model="email" label="Email" />
-        <BaseTextInput type="password" required v-model="password" label="Password" />
-        <BaseTextInput type="password" required v-model="passwordConfirm" label="Confirm Password" />
-        <p v-if="displayError"> {{errorMessage}} </p>
-        <button type="submit">Sign In</button>
-      </form>
-        <RouterLink :to="{name: 'login'}">Login</RouterLink>
-    </div>
-  </main>
+  <v-app>
+    <v-main>
+      <UserNavigation />
+
+      <div>
+        <form novalidate @submit.prevent = "onSubmit()">
+          {{handleInputValidation}}
+          <BaseTextInput type="email" required v-model="email" label="Email" />
+          <BaseTextInput type="password" required v-model="password" label="Password" />
+          <BaseTextInput type="password" required v-model="passwordConfirm" label="Confirm Password" />
+          <p v-if="displayError"> {{errorMessage}} </p>
+          <button type="submit">Sign In</button>
+        </form>
+          <RouterLink :to="{name: 'login'}">Login</RouterLink>
+      </div>
+    </v-main>
+  </v-app>
 </template>

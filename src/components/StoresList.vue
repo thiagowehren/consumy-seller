@@ -8,6 +8,7 @@ import defaultShopImage from '@/assets/shop-default-256.png';
 import { Pagination } from '@/dtos/paginationDTO';
 import { StoreResponse } from '@/dtos/storeDTO';
 import LinkPathNav from '@/components/LinkPathNav.vue';
+import UserNavigation from '@/components/UserNavigation.vue';
 
 const route = useRoute();
 const router = useRouter();
@@ -49,27 +50,30 @@ const fetchStores = async (newPage?: number) => {
 </script>
 
 <template>
-  <main>
-    <div><LinkPathNav :route="`/stores`" :clickableSegments="[0]"/></div>
-    <div>
-      <div><p v-if="alert">{{ alert }}</p></div>
-      <div><p v-if="notice">{{ notice }}</p></div>
-      <div><p v-if="errorMessage">{{ errorMessage }}</p></div>
-      <h1>Stores</h1>
-      <router-link to="/stores/new">Create a new store</router-link>
-      <p>(page: {{ page }})</p>
-
-      <Paginator :pagination="pagination" path="/stores" @page-change="fetchStores" />
-
-      <ul v-if="stores.length > 0">
-        <li v-for="store in stores" :key="store.id">
-          <img :src="store.image_url ? store.image_url : defaultShopImage" alt="Imagem da loja" style="width: 100px; height: 100px;">
-          <p>{{ store.name }}</p>
-          <router-link :to="{ path: '/stores/' + store.id }">Ir a loja</router-link>
-          <p v-if="store.hidden">Hidden</p>
-        </li>
-      </ul>
-      <p v-else>Não há lojas disponíveis no momento.</p>
-    </div>
-  </main>
+  <v-app>
+    <v-main>
+      <UserNavigation />
+  
+      <div><LinkPathNav :route="`/stores`" :clickableSegments="[0]"/></div>
+      <div>
+        <div><p v-if="alert">{{ alert }}</p></div>
+        <div><p v-if="notice">{{ notice }}</p></div>
+        <div><p v-if="errorMessage">{{ errorMessage }}</p></div>
+        <h1>Stores</h1>
+        <router-link to="/stores/new">Create a new store</router-link>
+  
+        <Paginator :pagination="pagination" path="/stores" @page-change="fetchStores" />
+  
+        <ul v-if="stores.length > 0">
+          <li v-for="store in stores" :key="store.id">
+            <img :src="store.image_url ? store.image_url : defaultShopImage" alt="Imagem da loja" style="width: 100px; height: 100px;">
+            <p>{{ store.name }}</p>
+            <router-link :to="{ path: '/stores/' + store.id }">Ir a loja</router-link>
+            <p v-if="store.hidden">Hidden</p>
+          </li>
+        </ul>
+        <p v-else>Não há lojas disponíveis no momento.</p>
+      </div>
+    </v-main>
+  </v-app>
 </template>

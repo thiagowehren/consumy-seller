@@ -8,6 +8,7 @@ import defaultShopImage from '@/assets/shop-default-256.png';
 import { StoreResponse, ProductResponse, Pagination } from '@/dtos/storeDTO';
 import LinkPathNav from '@/components/LinkPathNav.vue';
 import ProductDetails from '@/components/ProductDetails.vue';
+import UserNavigation from '@/components/UserNavigation.vue';
 
 const route = useRoute();
 const router = useRouter();
@@ -68,28 +69,30 @@ const fetchMoreProducts = async () => {
 </script>
 
 <template>
-  <main>
-    <div>
-      <h1>Store</h1>
+  <v-app>
+    <v-main>
+      <UserNavigation />
 
-      <div><p v-if="errorMessage">{{ errorMessage }}</p></div>
-      <div><LinkPathNav :route="`stores/${storeId}`" :clickableSegments="[0, 1]" /></div>
-      <div v-if="store">
-          <img :src="store.image_url ? store.image_url : defaultShopImage" alt="Imagem da loja" style="width: 100px; height: 100px;">
-          <p>{{ store.name }}</p>
-          <p>Hidden: {{store.hidden}}</p>
-          <router-link :to="'/stores/' + store.id + '/edit'">Editar</router-link>
+      <div>
+        <h1>Store</h1>
+        <div><p v-if="errorMessage">{{ errorMessage }}</p></div>
+        <div><LinkPathNav :route="`stores/${storeId}`" :clickableSegments="[0, 1]" /></div>
+        <div v-if="store">
+            <img :src="store.image_url ? store.image_url : defaultShopImage" alt="Imagem da loja" style="width: 100px; height: 100px;">
+            <p>{{ store.name }}</p>
+            <p>Hidden: {{store.hidden}}</p>
+            <router-link :to="'/stores/' + store.id + '/edit'">Editar</router-link>
+        </div>
+        <h2>Products</h2>
+        <router-link :to="`/stores/${storeId}/products/new`">Create a new product</router-link>
+        <div v-if="products.length > 0">
+          <ProductDetails v-for="product in products" :key="product.id" :product="product" :storeId="storeId" />
+          <button @click="fetchMoreProducts" v-if="pagination.next">Carregar Mais</button>
+        </div>
+        <div v-else>
+          <p>No products available</p>
+        </div>
       </div>
-
-      <h2>Products</h2>
-      <router-link :to="`/stores/${storeId}/products/new`">Create a new product</router-link>
-      <div v-if="products.length > 0">
-        <ProductDetails v-for="product in products" :key="product.id" :product="product" :storeId="storeId" />
-        <button @click="fetchMoreProducts" v-if="pagination.next">Carregar Mais</button>
-      </div>
-      <div v-else>
-        <p>No products available</p>
-      </div>
-    </div>
-  </main>
+    </v-main>
+  </v-app>
 </template>
