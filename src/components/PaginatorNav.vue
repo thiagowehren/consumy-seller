@@ -26,8 +26,6 @@ const props = defineProps<{
 
 const emit = defineEmits(['page-change']);
 const router = useRouter();
-
-// Definindo currentPage como um ref e inicializando com base nos parâmetros da URL
 const currentPage = ref(getPageFromURL());
 
 function getPageFromURL(): number {

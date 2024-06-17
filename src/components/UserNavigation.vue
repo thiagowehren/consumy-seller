@@ -5,6 +5,12 @@
         <h1 class="text-3xl font-bold text-red-accent-4 ml-4">Delivery</h1>
       </div>
       <div class="flex items-center space-x-4">
+        <v-btn to="/" exact text class="text-red-accent-4">Home</v-btn>
+        <v-btn to="/stores" exact text class="text-red-accent-4">Lojas</v-btn>
+        <v-btn to="/orders" exact text class="text-red-accent-4">Pedidos</v-btn>
+        <v-btn exact text class="text-red-accent-4" icon="mdi-bell-outline"></v-btn>
+      </div>
+      <div class="flex items-center space-x-4">
         <template v-if="isLoggedIn">
           <div class="flex items-center space-x-4">
             <span v-if="currentUser.email" class="text-red-accent-4 underline">{{ currentUser.email }}</span>
