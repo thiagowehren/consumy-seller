@@ -15,7 +15,7 @@ const closeModal = () => {
 <template>
   <div class="modal-overlay" @click="closeModal">
     <div class="modal-content" @click.stop>
-      <button class="close-button" @click="closeModal">×</button>
+      <v-btn class="close-button" icon="mdi-close" style="z-index: 9999;" @click="closeModal"></v-btn>
       <OrderDetails :orderId="order.id" />
     </div>
   </div>
