@@ -34,9 +34,9 @@ export async function createStoreProduct(storeId: string, productData: CreatePro
         const value = productData[key as keyof typeof productData];
         if (value !== undefined && value !== null) {
             if (key === 'image') {
-                formData.append(key, (value as File));
+                formData.append(`product[${key}]`, value as File);
             } else {
-                formData.append(`product[${key}]`, value as string);
+                formData.append(`product[${key}]`, value as string | Blob);
             }
         }
     });
@@ -67,9 +67,9 @@ export async function updateStoreProduct(storeId: string, productId: string, pro
         const value = productData[key as keyof typeof productData];
         if (value !== undefined && value !== null) {
             if (key === 'image') {
-                formData.append(key, (value as File));
+                formData.append(`product[${key}]`, value as File);
             } else {
-                formData.append(`product[${key}]`, value as string);
+                formData.append(`product[${key}]`, value as string | Blob);
             }
         }
     });
