@@ -1,6 +1,6 @@
 export const storeFormErrorMessages = {
   name: {
-    required: "Store name is required",
-    invalid: "Name is too short (minimum: 3 characters)"
+    required: "O nome da loja é obrigatório",
+    invalid: "Nome muito curto (mínimo: 3 caracteres)"
   }
 };

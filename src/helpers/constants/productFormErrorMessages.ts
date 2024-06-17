@@ -1,6 +1,6 @@
 export const productFormErrorMessages = {
   title: {
-    required: "Product title is required",
-    invalid: "Title is too short (minimum: 1 characters)"
+    required: "O título do produto é obrigatório.",
+    invalid: "Título muito curto (mínimo: 1 caractere)."
   }
 };
