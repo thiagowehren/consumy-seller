@@ -61,6 +61,11 @@ export async function request<T>(path: string, config: RequestConfig = {}): Prom
         throw new HTTPError("HTTP Error!", response.status);
     }
 
-    const data = await response.json();
-    return data;
+    const contentType = response.headers.get('content-type');
+    if (contentType && contentType.includes('application/json')) {
+        const data = await response.json();
+        return data as T;
+    } else {
+        return undefined;
+    }
 }
