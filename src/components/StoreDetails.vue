@@ -66,9 +66,8 @@
                   #{{ product.id }}
                 </v-card-subtitle>
                 <v-card-text>
-                  <div>{{product.expires_at ? `countdown:${product.expires_at}` : ''}}</div>
-
-                  <div v-if="product.price" class="font-bold">Preço: {{product.price}}</div>
+                  <div>{{product.expires_at ? `countdown:${product.expires_at}` : '⠀'}}</div>
+                  <div class="font-bold">{{product.price ? product.price  : '⠀'}}</div>
                 </v-card-text>
                 <v-card-actions>
                   <router-link :to="{ path: `/stores/${storeId}/products/${product.id}/edit` }">
