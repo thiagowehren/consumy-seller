@@ -32,12 +32,6 @@
               >Enviar</v-btn>
 
               <v-btn
-                color="grey-darken-3"
-                :disabled="!isStateActive('complete')"
-                @click.prevent="isStateActive('complete')? handleUpdateOrderState(order.id, 'complete') : null"
-              >Completar</v-btn>
-
-              <v-btn
                 color="red"
                 :disabled="!isStateActive('cancel')"
                 @click.prevent="isStateActive('cancel')? handleUpdateOrderState(order.id, 'cancel') : null"
