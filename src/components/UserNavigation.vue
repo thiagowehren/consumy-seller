@@ -15,7 +15,7 @@
                 v-model="searchQuery"
                 label="Pesquisar"
                 prepend-inner-icon="mdi-magnify"
-                @keyup.enter="handleSearch"
+                @input="debouncedSearch"
               ></v-text-field>
             </v-card-text>
             <v-divider></v-divider>
@@ -119,6 +119,7 @@ import { ref, watchEffect } from 'vue';
 import { RouterLink, useRouter } from 'vue-router';
 import { Auth } from '@/auth';
 import { searchAll } from '@/api/searchAPI';
+import { debounce } from 'lodash';
 import defaultProductImage from '@/assets/dish-default-256.png';
 import defaultStoreImage from '@/assets/shop-default-256.png';
 
@@ -143,7 +144,7 @@ const searchQuery = ref('');
 const searchResults = ref({ stores: [], products: [] });
 const searchResultsVisible = ref(false);
 
-const handleSearch = async () => {
+const performSearch = async () => {
   console.log('Pesquisando por:', searchQuery.value);
   try {
     const response = await searchAll(searchQuery.value);
@@ -174,6 +175,8 @@ const highlightText = (originalText, query) => {
   return highlightedText;
 };
 
+
+const debouncedSearch = debounce(performSearch, 300)
 
 watchEffect(() => {
   isLoggedIn.value = auth.isLoggedIn();
