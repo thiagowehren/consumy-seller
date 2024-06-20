@@ -3,6 +3,9 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
+    "run": "npm run dev",
+    "cypress:web": "npx cypress open",
+    "cypress:headless": "npx cypress run --browser electron",
     "build": "run-p type-check \"build-only {@}\" --",
     "test:unit": "vitest",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
@@ -26,6 +29,7 @@
     "vuetify": "^3.6.9"
   },
   "devDependencies": {
+    "@cypress/vue": "^6.0.1",
     "@mdi/font": "^7.4.47",
     "@rushstack/eslint-patch": "^1.8.0",
     "@tailwindcss/typography": "^0.5.13",
