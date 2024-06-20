@@ -106,6 +106,13 @@ const router = createRouter({
       component: () => import('@/components/OrderDetails.vue'),
       meta: { title: 'Order - Delivery' }
     },
+    {
+      path: '/dashboard',
+      name: 'dashboard',
+      beforeEnter: redirectIfGuest,
+      component: () => import('@/components/DashboardPage.vue'),
+      meta: { title: 'Dashboard - Delivery' }
+    },
   ]
 })
 
