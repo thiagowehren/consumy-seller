@@ -66,7 +66,12 @@
                   #{{ product.id }}
                 </v-card-subtitle>
                 <v-card-text>
-                  <div>{{product.expires_at ? `countdown:${product.expires_at}` : '⠀'}}</div>
+                  <div v-if="product.expires_at">
+                    <Countdown :expires-at="product.expires_at" />
+                  </div>
+                  <div v-else>
+                    ⠀
+                  </div>
                   <div class="font-bold">{{product.price ? product.price  : '⠀'}}</div>
                 </v-card-text>
                 <v-card-actions>
@@ -118,6 +123,7 @@ import { standardizeErrorMessage } from '@/helpers/standardizeErrorMessage';
 import defaultShopImage from '@/assets/shop-default-256.png';
 import { StoreResponse, ProductResponse, Pagination } from '@/dtos/storeDTO';
 import LinkPathNav from '@/components/LinkPathNav.vue';
+import Countdown from '@/components/CountdownProduct.vue';
 import UserNavigation from '@/components/UserNavigation.vue';
 
 const route = useRoute();
